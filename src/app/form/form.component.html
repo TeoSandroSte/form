@@ -1,0 +1,117 @@
+
+<div class="tuttoschermo">
+  <div class="bianco">
+    <div class="contieniRegistrati">
+      <div class="registrati">
+        Registrati
+      </div>
+    </div>
+    <mat-horizontal-stepper linear labelPosition="bottom" class="contieniStepper" #stepper>
+      <mat-step class="stepper" [stepControl]="form1">
+        <form class="form" [formGroup]="form1">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Cognome</mat-label>
+            <input matInput formControlName="cognome" required>
+          </mat-form-field>
+
+          <label class="sesso">Sesso*: </label>
+          <mat-radio-group class="genere" formControlName="sesso">
+            <mat-radio-button value="F">Femmina</mat-radio-button>
+            <mat-radio-button value="M">Maschio</mat-radio-button>
+          </mat-radio-group>
+            
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Data di Nascita"  formControlName="nascita" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+            
+          <mat-form-field appearance="outline">
+            <mat-label>Codce Fiscale</mat-label>
+            <input class ="codfis" matInput formControlName="fiscale" required>
+            <mat-icon matSuffix matTooltip="Esempio: ABCDEF12G34H567I" matTooltipPosition="right">help_outline</mat-icon>
+          </mat-form-field>
+          {{data()}}
+
+          <div class="avanti">
+            <button [disabled]="!data()" mat-raised-button color="primary" matStepperNext>Avanti</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step class="stepper" [stepControl]="form2">
+          <form class="form" [formGroup]="form2">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email">
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Carta d'Identità</mat-label>
+              <input matInput formControlName="identita" required>
+              <mat-icon matSuffix matTooltip="Esempio: AB1234567" matTooltipPosition="right">help_outline</mat-icon>
+            </mat-form-field>
+              
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker2" placeholder="Data di Rilascio" required>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+  
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker3" placeholder="Data di Scadenza" formControlName="scadenza" required>
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+
+            {{prova()}}
+  
+            <div class="bottoni">
+              <div class="spazio"></div>
+              <div class="contieniBottone">
+                <button class="bottone" mat-raised-button color="primary" matStepperPrevious>Indietro</button>
+                <button class="bottone" mat-raised-button color="primary" matStepperNext>Avanti</button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+      <mat-step class="stepper" [stepControl]="form3" [optional]="!isOptional">
+        <form class="form" [formGroup]="form3">
+
+          <mat-form-field appearance="outline">
+            <mat-label>Citta</mat-label>
+            <input matInput formControlName="citta">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provincia">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Via/Corso</mat-label>
+            <input matInput formControlName="via">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Civico</mat-label>
+            <input matInput formControlName="civico">
+          </mat-form-field>
+
+          <div class="bottoni">
+            <div class="spazio"></div>
+            <div class="contieniBottone">
+              <button class="bottone" mat-raised-button color="primary" matStepperPrevious>Indietro</button>
+              <button class="bottone" mat-raised-button color="primary">Conferma</button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>
