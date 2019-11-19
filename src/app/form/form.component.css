@@ -1,9 +1,32 @@
 .tuttoschermo {
-    background-image: url("../../assets/immagini/sfondo.jpeg");
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.schermo {
+    background-image: url("../../assets/immagini/immagine3.png");
     background-size: 100%;
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
+}
+
+.centra {
+    display: flex;
+}
+
+mat-nav-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.laterali {
+    margin: 20px 50px;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .bianco {
@@ -18,10 +41,10 @@
 }
 
 .registrati{
-    height: 50px;
+    height: 40px;
     margin: auto;
     font-size: 24px;
-    padding: 30px 0;
+    padding: 20px 0;
 }
 
 .contieniStepper {
@@ -74,4 +97,13 @@
 
 .bottone {
     margin: 5px 0;
+}
+
+.opzionale {
+    margin: 0 auto 10px;
+}
+
+app-navbar {
+    display: flex;
+    width: 100%;
 }

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MatSidenav } from '@angular/material';
+import { MockService } from '../mock.service';
 
 @Component({
   selector: 'app-form',
@@ -8,34 +10,46 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
 
+  @ViewChild('snav', {static: false}) snav: MatSidenav;
+  fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
+
   form1 = this.formBuilder.group({
-    nome: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-    cognome: ['', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
-    sesso: ['', Validators.required],
+    nome: ['mtl', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+    cognome: ['stf', [Validators.required, Validators.pattern('[a-zA-Z ]*')]],
+    sesso: ['M', Validators.required],
     nascita: ['', Validators.required],
-    fiscale: ['', [Validators.required, Validators.pattern('^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$')]],
-  })
+    fiscale: ['stfmtl93s23l219i', [Validators.required, Validators.pattern('^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$')]],
+  });
 
   form2 = this.formBuilder.group({
-    email: ['', Validators.required],
-    identita: ['', Validators.required],
+    email: ['tent@tet.com', [Validators.required, Validators.email]],
+    identita: ['cv1234567', [Validators.required, Validators.pattern('^[a-zA-Z]{2}[0-9]{7}$')]],
     rilascio: ['', Validators.required],
     scadenza: ['', Validators.required],
-  })
+  });
 
   form3 = this.formBuilder.group({
-    email: [''],
     via: [''],
     civico: [''],
     citta: [''],
     provincia: [''],
-  })
+  });
 
-  date = new Date()
+  date: Date;
+  dataSelezionata: Date;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private richiesta: MockService) { }
 
   ngOnInit() {
+    this.date = new Date();
+    this.dataSelezionata = new Date( new Date().setDate(this.date.getDate() - 1));
+    console.log(typeof this.dataSelezionata);
+    console.log(this.dataSelezionata);
+  }
+
+  onMenuClicked() {
+    console.log('open sidenav');
+    this.snav.toggle();
   }
 
   cognomeFiscale(): string {
@@ -46,7 +60,8 @@ export class FormComponent implements OnInit {
     let differenza: number;
 
     for ( i = 0; i < stringaCognome.length; i++) {
-      if (stringaCognome[i] !== 'a' && stringaCognome[i] !== 'e' && stringaCognome[i] !== 'i' && stringaCognome[i] !== 'o' && stringaCognome[i] !== 'u' && stringaCognome[i] !== ' ') {
+      if (stringaCognome[i] !== 'a' && stringaCognome[i] !== 'e' && stringaCognome[i]
+      !== 'i' && stringaCognome[i] !== 'o' && stringaCognome[i] !== 'u' && stringaCognome[i] !== ' ') {
         stringaConsonanti += stringaCognome[i];
       } else {
         if (stringaCognome[i] !== ' ') {
@@ -86,7 +101,8 @@ export class FormComponent implements OnInit {
     let differenza: number;
 
     for ( i = 0; i < stringaNome.length; i++) {
-      if (stringaNome[i] !== 'a' && stringaNome[i] !== 'e' && stringaNome[i] !== 'i' && stringaNome[i] !== 'o' && stringaNome[i] !== 'u' && stringaNome[i] !== ' ') {
+      if (stringaNome[i] !== 'a' && stringaNome[i] !== 'e' && stringaNome[i]
+      !== 'i' && stringaNome[i] !== 'o' && stringaNome[i] !== 'u' && stringaNome[i] !== ' ') {
         stringaConsonanti += stringaNome[i];
       } else {
         if (stringaNome[i] !== ' ') {
@@ -126,21 +142,28 @@ export class FormComponent implements OnInit {
     const codice: string = this.form1.get('fiscale').value;
     const codiceC = this.cognomeFiscale();
     const codiceN = this.nomeFiscale();
+    const anno = new Date(this.form1.get('nascita').value).getFullYear().toString();
+    const giorno = new Date(this.form1.get('nascita').value).getDate().toString();
+    const giornoFemmina = parseInt(giorno[0], 10) + 4;
+    const a = giornoFemmina.toString();
+    const mesi = ['a', 'b', 'c', 'd', 'e', 'h', 'l', 'm', 'p', 's', 't'];
+    const mesiG = ['A', 'B', 'C', 'D', 'E', 'H', 'L', 'M', 'P', 'S', 'T'];
+    const mese: number = new Date(this.form1.get('nascita').value).getMonth() - 1;
 
-    /*const data: string = this.form1.get('birthday').value;*/
     if ( codice[0] === codiceC[0]
       && codice[1] === codiceC[1]
       && codice[2] === codiceC[2]
       && codice[3] === codiceN[0]
       && codice[4] === codiceN[1]
-      && codice[5] === codiceN[2]) {
-        /*if ( this.form1.get('genderm').value === 'F' && stringaCf[9] === new String( parseInt(data[8], 10) + 4))  {
-          return true;
-        } else if (this.form1.get('genderm').value === 'M' && stringaCf[9] === data[8]) {
-        return true;
-        } else {
-          return false;
-        }*/
+      && codice[5] === codiceN[2]
+      && codice[6] === anno[2]
+      && codice[7] === anno[3]
+      && codice[10] === giorno[1]
+      && (this.form1.get('sesso').value === 'F' && codice[9] === a
+      || this.form1.get('sesso').value === 'M' && codice[9] === giorno[0])
+      && (mesi[mese] === codice[8]
+        || mesiG[mese] === codice[8])
+      ) {
         return true;
       } else {
         return false;
@@ -148,19 +171,33 @@ export class FormComponent implements OnInit {
   }
 
   data(): boolean {
-    if ( new Date(this.form1.get('nascita').value) < this.date) {
+
+    if ( this.form1.get('nascita').value < this.date.setHours(0, 0, 0, 0)) {
       return true;
     } else {
       return false;
     }
   }
 
-  prova(): boolean {
-    if (this.form2.get('rilascio').value < this.form2.get('scadenza').value) {
+  data2(): boolean {
+
+    if ( this.form2.get('rilascio').value < this.date.setHours(0, 0, 0, 0)) {
       return true;
     } else {
       return false;
     }
+  }
+
+  maggiore(): boolean {
+    if (this.form2.get('rilascio').value <  this.form2.get('scadenza').value) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  onSubmit() {
+    this.richiesta.salvaDati(this.form1.value, this.form2.value, this.form3.value);
   }
 
 }
